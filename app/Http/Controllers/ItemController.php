@@ -47,4 +47,10 @@ class ItemController extends Controller
         return response()->json($data);
 
     }
+
+    public function destroyData($id){
+        $data = Item::findorFail($id);
+        $data->delete();
+        return response()->json($data);
+    }
 }

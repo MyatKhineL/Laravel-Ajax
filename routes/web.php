@@ -23,3 +23,4 @@ Route::get('item/all/',[ItemController::class,'allData']);
 Route::post('item/store/',[ItemController::class,'storeData']);
 Route::get('item/edit/{id}',[ItemController::class,'editData']);
 Route::post('item/update/{id}',[ItemController::class,'updateData']);
+Route::get('item/destroy/{id}',[ItemController::class,'destroyData']);

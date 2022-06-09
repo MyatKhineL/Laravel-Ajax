@@ -9,6 +9,7 @@
     <link href="{{ asset('css/app.css')}}" rel="stylesheet">
     <script src="{{ asset('js/app.js')}}"></script>
     <script src="{{ asset('js/jquery.min.js')}}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.4.17/sweetalert2.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -95,7 +96,7 @@
                    data = data +"<td>"+value.price+"</td>"
                    data = data + "<td class='d-flex justify-content-around'>"
                    data = data + "<button class='btn btn-warning ml-2' onclick='editData("+value.id+")'>Edit</button>"
-                   data = data + "<button class='btn btn-danger'>Delete</button>"
+                   data = data + "<button class='btn btn-danger' onclick='deleteData("+value.id+")'>Delete</button>"
                    data = data + "</td>"
                    data = data + "</tr>"
                })
@@ -122,7 +123,18 @@
             success:function (data){
                 clearData();
                 allData();
-                console.log('successfuly data added');
+                const msg = Swal.mixin({
+                            toast:true,
+                            position:'top-end',
+                            icon:'success',
+                            showConfirmbutton:false,
+                            timer:1500
+                })
+                msg.fire({
+                    type:'success',
+                    title:'Item is added Successfully',
+                })
+                //console.log('successfuly data added');
             },
             // show Error responseJson from readyState
             error:function (error){
@@ -137,7 +149,7 @@
     // end store data
 
     // start edit data
-         function editData(id){
+         function editData($id){
            $.ajax({
                type:"GET",
                dataType:"json",
@@ -182,6 +194,17 @@
                   $('#addU').hide();
                   clearData();
                   allData();
+                  const msg = Swal.mixin({
+                      toast:true,
+                      position:'top-end',
+                      icon:'success',
+                      showConfirmbutton:false,
+                      timer:1500
+                  })
+                  msg.fire({
+                      type:'success',
+                      title:'Item is updated Successfully',
+                  })
                   //console.log('Item updated');
               },
               error:function (error){
@@ -195,6 +218,20 @@
       }
 
     //end update data
+
+    //start delete
+    function deleteData(id){
+       $.ajax({
+           type:"GET",
+           dataType:"json",
+           url:"/item/destroy/"+id,
+
+           success:function (data){
+               allData()
+               console.log(data);
+           }
+       })
+    }
 
 
 
