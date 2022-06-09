@@ -35,6 +35,9 @@
         </div>
         <div class="col-md-4">
             <div class="card mt-5">
+                <div class="card-header">
+                    <span id="addT">Add</span> <span id="addU">Update</span> Item</div>
+
                 <div class="card-body">
                     <div class="form-group mb-3">
                         <label>Item Name</label>
@@ -46,8 +49,9 @@
                         <input type="number" class="form-control" id="price">
                         <span class="text-danger" id="priceError"></span>
                     </div>
+                    <input type="hidden" id="id">
                     <button type="submit" onclick="addData()" id="addBtn" class="btn btn-primary">Add</button>
-{{--                    <button type="submit" id="updateBtn" class="btn btn-primary">Update</button>--}}
+                    <button type="submit" id="updateBtn" onclick="updateData()" class="btn btn-success">Update</button>
 
                 </div>
             </div>
@@ -55,6 +59,13 @@
     </div>
 </div>
 <script>
+    $('#addBtn').show();
+    $('#updateBtn').hide();
+    $('#addT').show();
+    $('#addU').hide();
+
+
+
     $.ajaxSetup({
         headers:{
             'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
@@ -124,6 +135,8 @@
     }
 
     // end store data
+
+    // start edit data
          function editData(id){
            $.ajax({
                type:"GET",
@@ -132,6 +145,14 @@
 
                //show old value in input
                success:function (data){
+
+                   // managment Button
+                   $('#addBtn').hide();
+                   $('#updateBtn').show();
+                   $('#addT').hide();
+                   $('#addU').show();
+                   $('#id').val(data.id);
+
                    $('#title').val(data.title);
                    $('#price').val(data.price);
 
@@ -140,6 +161,40 @@
            })
          }
     // edit data
+
+
+    // update data
+
+      function updateData(){
+          var id = $('#id').val();
+          var title = $('#title').val();
+          var price = $('#price').val();
+
+          $.ajax({
+              type:"POST",
+              dataType:"json",
+              data:{title:title,price:price},
+              url:"/item/update/"+id,
+              success:function (data){
+                  $('#addBtn').show();
+                  $('#updateBtn').hide();
+                  $('#addT').show();
+                  $('#addU').hide();
+                  clearData();
+                  allData();
+                  //console.log('Item updated');
+              },
+              error:function (error){
+                  $('#titleError').text(error.responseJSON.errors.title);
+                  $('#priceError').text(error.responseJSON.errors.price);
+
+              }
+
+          })
+
+      }
+
+    //end update data
 
 
 

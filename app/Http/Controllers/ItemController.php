@@ -33,4 +33,18 @@ class ItemController extends Controller
         $data = Item::findorFail($id);
         return response()->json($data);
     }
+
+    public function updateData(Request $request,$id){
+        $request->validate([
+            'title'=>'required',
+            'price'=>'required'
+        ]);
+        $data = Item::findorFail($id);
+        $data->title = $request->title;
+        $data->price = $request->price;
+        $data->update();
+
+        return response()->json($data);
+
+    }
 }
