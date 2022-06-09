@@ -28,4 +28,9 @@ class ItemController extends Controller
 
           return response()->json($data);
     }
+
+    public function editData($id){
+        $data = Item::findorFail($id);
+        return response()->json($data);
+    }
 }

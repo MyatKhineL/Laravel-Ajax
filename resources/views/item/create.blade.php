@@ -83,7 +83,7 @@
                    data = data +"<td>"+value.title+"</td>"
                    data = data +"<td>"+value.price+"</td>"
                    data = data + "<td class='d-flex justify-content-around'>"
-                   data = data + "<button class='btn btn-warning ml-2'>Edit</button>"
+                   data = data + "<button class='btn btn-warning ml-2' onclick='editData("+value.id+")'>Edit</button>"
                    data = data + "<button class='btn btn-danger'>Delete</button>"
                    data = data + "</td>"
                    data = data + "</tr>"
@@ -94,6 +94,7 @@
         })
     }
     allData();
+    //end all data
 
     //store data
     function addData(){
@@ -121,6 +122,25 @@
         });
 
     }
+
+    // end store data
+         function editData(id){
+           $.ajax({
+               type:"GET",
+               dataType:"json",
+               url:"/item/edit/"+id,
+
+               //show old value in input
+               success:function (data){
+                   $('#title').val(data.title);
+                   $('#price').val(data.price);
+
+                   //console.log(data);
+               }
+           })
+         }
+    // edit data
+
 
 
 </script>

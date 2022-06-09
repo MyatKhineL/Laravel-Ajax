@@ -21,3 +21,4 @@ Route::get('/', function () {
 Route::get('item/',[ItemController::class,'index']);
 Route::get('item/all/',[ItemController::class,'allData']);
 Route::post('item/store/',[ItemController::class,'storeData']);
+Route::get('item/edit/{id}',[ItemController::class,'editData']);
