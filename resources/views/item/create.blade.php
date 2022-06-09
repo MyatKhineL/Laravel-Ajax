@@ -4,9 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{csrf_token()}}">
+
     <title>Laravel</title>
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    <script src="{{ asset('js/app.js') }}"></script>
+    <link href="{{ asset('css/app.css')}}" rel="stylesheet">
+    <script src="{{ asset('js/app.js')}}"></script>
     <script src="{{ asset('js/jquery.min.js')}}"></script>
 </head>
 <body>
@@ -37,14 +38,14 @@
                 <div class="card-body">
                     <div class="form-group mb-3">
                         <label>Item Name</label>
-                        <input type="text" class="form-control" id="name">
+                        <input type="text" class="form-control" id="title">
                     </div>
                     <div class="form-group mb-3">
                         <label>Item Price</label>
-                        <input type="text" class="form-control" id="price">
+                        <input type="number" class="form-control" id="price">
                     </div>
-                    <button type="submit" id="addBtn" class="btn btn-primary">Add</button>
-                    <button type="submit" id="updateBtn" class="btn btn-primary">Update</button>
+                    <button type="submit" onclick="addData()" id="addBtn" class="btn btn-primary">Add</button>
+{{--                    <button type="submit" id="updateBtn" class="btn btn-primary">Update</button>--}}
 
                 </div>
             </div>
@@ -56,7 +57,12 @@
         headers:{
             'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
         }
-    })
+    });
+
+    function clearData(){
+        $('#title').val('');
+        $('#price').val('');
+    }
 
     function allData(){
         $.ajax({
@@ -81,7 +87,25 @@
 
         })
     }
-allData();
+    allData();
+
+    //store data
+    function addData(){
+        var title = $('#title').val();
+        var price = $('#price').val();
+        $.ajax({
+            url:"/item/store/",
+            type:"POST",
+            dataType:"json",
+            data:{title:title,price:price},
+            success:function (data){
+                clearData()
+                allData()
+                console.log(data);
+            }
+        });
+
+    }
 
 
 </script>

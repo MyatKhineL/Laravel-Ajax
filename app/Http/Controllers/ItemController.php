@@ -15,4 +15,12 @@ class ItemController extends Controller
           $data = Item::all();
           return response()->json($data);
     }
+    public function storeData(Request $request){
+          $data = new Item();
+          $data->title = $request->title;
+          $data->price = $request->price;
+          $data->save();
+
+          return response()->json($data);
+    }
 }
