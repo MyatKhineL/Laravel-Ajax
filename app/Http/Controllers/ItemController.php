@@ -16,6 +16,11 @@ class ItemController extends Controller
           return response()->json($data);
     }
     public function storeData(Request $request){
+          $request->validate([
+             'title'=>'required',
+             'price'=>'required'
+          ]);
+
           $data = new Item();
           $data->title = $request->title;
           $data->price = $request->price;

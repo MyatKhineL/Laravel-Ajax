@@ -39,10 +39,12 @@
                     <div class="form-group mb-3">
                         <label>Item Name</label>
                         <input type="text" class="form-control" id="title">
+                        <span class="text-danger" id="titleError"></span>
                     </div>
                     <div class="form-group mb-3">
                         <label>Item Price</label>
                         <input type="number" class="form-control" id="price">
+                        <span class="text-danger" id="priceError"></span>
                     </div>
                     <button type="submit" onclick="addData()" id="addBtn" class="btn btn-primary">Add</button>
 {{--                    <button type="submit" id="updateBtn" class="btn btn-primary">Update</button>--}}
@@ -59,11 +61,15 @@
         }
     });
 
+    // clear all data
     function clearData(){
         $('#title').val('');
         $('#price').val('');
+        $('#titleError').text('');
+        $('#priceError').text('');
     }
 
+    // get all data
     function allData(){
         $.ajax({
             type:"GET",
@@ -91,17 +97,26 @@
 
     //store data
     function addData(){
+        // take value of input
         var title = $('#title').val();
         var price = $('#price').val();
+
+
         $.ajax({
             url:"/item/store/",
             type:"POST",
             dataType:"json",
             data:{title:title,price:price},
             success:function (data){
-                clearData()
-                allData()
-                console.log(data);
+                clearData();
+                allData();
+                console.log('successfuly data added');
+            },
+            // show Error responseJson from readyState
+            error:function (error){
+                  $('#titleError').text(error.responseJSON.errors.title);
+                  $('#priceError').text(error.responseJSON.errors.price);
+
             }
         });
 
